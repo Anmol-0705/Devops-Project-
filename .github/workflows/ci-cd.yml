@@ -178,8 +178,12 @@ jobs:
     # 🔹 Setup SSH Key for Terraform
     - name: Setup SSH Key
       run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PUBLIC_KEY }}" > ~/.ssh/id_rsa.pub
+        if [ -z "${{ secrets.SSH_PUBLIC_KEY }}" ]; then
+          echo "❌ ERROR: The SSH_PUBLIC_KEY GitHub secret is missing or empty!"
+          echo "Please add it in your repository settings: Settings > Secrets and variables > Actions"
+          exit 1
+        fi
+        echo "${{ secrets.SSH_PUBLIC_KEY }}" > terraform/ci_id_rsa.pub
 
     # 🔹 Terraform Init
     - name: Terraform Init
@@ -198,7 +202,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         cd terraform
-        terraform apply -auto-approve -input=false -var="your_ip=0.0.0.0/0"
+        terraform apply -auto-approve -input=false -var="your_ip=0.0.0.0/0" -var="public_key_path=ci_id_rsa.pub"
 
     # 🔹 Final Check
     - name: Pipeline Status
