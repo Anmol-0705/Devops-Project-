@@ -188,6 +188,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         cd terraform
+        rm -rf .terraform terraform.tfstate terraform.tfstate.backup .terraform.lock.hcl
         terraform init -input=false -reconfigure
 
     # 🔹 Terraform Apply
