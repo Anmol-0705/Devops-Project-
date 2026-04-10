@@ -188,7 +188,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         cd terraform
-        terraform init -input=false
+        terraform init -input=false -reconfigure
 
     # 🔹 Terraform Apply
     - name: Terraform Apply
