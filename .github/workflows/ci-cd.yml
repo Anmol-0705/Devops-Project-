@@ -80,7 +80,6 @@
 #       run: echo "CI/CD pipeline completed successfully ✅"
 
 
-
 name: Smart Task Manager CI/CD Pipeline
 
 on:
@@ -108,7 +107,7 @@ jobs:
       with:
         python-version: "3.10"
 
-    # 🔹 Install Dependencies
+    # 🔹 Install Backend Dependencies
     - name: Install Backend Dependencies
       run: |
         cd backend
@@ -142,13 +141,17 @@ jobs:
       run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:latest
 
-    # 🔥 VALIDATE YAML (NO KUBECTL)
+    # 🔹 Install YAML parser (FIXED ✅)
+    - name: Install PyYAML
+      run: pip install pyyaml
+
+    # 🔹 Validate Kubernetes YAML
     - name: Validate Kubernetes YAML
       run: |
         echo "Validating YAML files..."
         for file in k8s/*.yaml; do
           echo "Checking $file"
-          python -c "import yaml,sys; yaml.safe_load(open('$file'))"
+          python -c "import yaml; yaml.safe_load(open('$file'))"
         done
 
     # 🔹 Simulate Deployment
