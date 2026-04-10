@@ -7,7 +7,9 @@ terraform {
     }
   }
   backend "s3" {
-    key = "smart-task-manager/terraform.tfstate"
+    bucket = "anmbucket07"
+    key    = "smart-task-manager/terraform.tfstate"
+    region = "ap-south-1"
   }
 }
 

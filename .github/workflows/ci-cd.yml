@@ -188,7 +188,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         cd terraform
-        terraform init
+        terraform init -input=false
 
     # 🔹 Terraform Apply
     - name: Terraform Apply
@@ -197,7 +197,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         cd terraform
-        terraform apply -auto-approve -var="your_ip=0.0.0.0/0"
+        terraform apply -auto-approve -input=false -var="your_ip=0.0.0.0/0"
 
     # 🔹 Final Check
     - name: Pipeline Status
